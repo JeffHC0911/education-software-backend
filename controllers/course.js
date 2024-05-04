@@ -51,6 +51,37 @@ const getCourses = async (req, res = response) => {
     }
 }
 
+const  getCoursesById = async (req, res = response) => {
+    
+        const courseId = req.params.id;
+    
+        try {
+    
+            const course = await Course.findById(courseId)
+                                    .populate('teacher', 'name')
+                                    .populate('students', 'name lastname');
+            
+            if(!course){
+                return res.status(404).json({
+                    ok: false,
+                    msg: 'Curso no encontrado por ese id'
+                })
+            }
+    
+            res.json({
+                ok: true,
+                course
+            });
+            
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({
+                ok: false,
+                msg: 'Por favor, hable con el administrador'
+            });
+        }
+}
+
 const getStudentsByCourse = async (req, res = response) => {
     try {
         const courseId = req.params.id;
@@ -143,6 +174,7 @@ const deleteCourse = async (req, res = response) =>{
 module.exports = {
     createCourse,
     getCourses,
+    getCoursesById,
     getStudentsByCourse,
     updateCourses,
     deleteCourse
