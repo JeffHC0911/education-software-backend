@@ -8,7 +8,7 @@ const { Router } = require('express');
 const {fieldValidators} = require('../middlewares/field-validators');
 const {validateJWT} = require('../middlewares/validate-jwt');
 const {check} = require('express-validator');
-const {createAssesment, getAssesments, updateAssesments, deleteAssesment} = require('../controllers/assesment')
+const {createAssesment, getAssesments, updateAssesments, deleteAssesment, getAssesmentById} = require('../controllers/assesment')
 
 
 const router = Router();
@@ -17,6 +17,8 @@ const router = Router();
 router.use(validateJWT);
 
 router.get('/', getAssesments);
+
+router.get('/:id', getAssesmentById);
 
 router.post(
     '/',
